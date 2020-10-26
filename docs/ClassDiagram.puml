@@ -1,0 +1,112 @@
+ @startuml
+
+skinparam ClassBorderColor black
+skinparam ClassBackgroundColor white
+
+abstract Node {
+	-Node* _left
+	-Node* _right
+	#Node(Node* left = nullptr, Node* right = nullptr)
+	+virtual ~Node()
+	+Node* getLeft()
+	+Node* getRight()
+	+virtual double evaluate() const = 0
+	+virtual void print(std::ostream&) const = 0
+	+virtual Node* clone() const = 0
+	+ostream& operator<<(ostream& os, const Node& node)
+}
+
+abstract BinaryNode {
+	#BinaryNode(Node* left, Node* right)
+}
+
+abstract UnaryNode {
+	#UnaryNode(Node* left)
+}
+
+class Positive {
+	+Positive(Node* left)
+	+double evaluate() const override
+	+void print(std::ostream&) const override
+	+Node* clone() const override
+}
+
+class Negative {
+	+Negative(Node* left)
+	+double evaluate() const override
+	+void print(std::ostream&) const override
+	+Node* clone() const override
+}
+
+abstract LeafNode {
+	#LeafNode()
+}
+
+Class Sub {
+	+Sub(Node* left, Node* right)
+	+double evaluate() const override
+	+void print(std::ostream&) const override
+	+Node* clone() const override
+}
+
+Class Add {
+	+Add(Node* left, Node* right)
+	+double evaluate() const override
+	+void print(std::ostream&) const override
+	+Node* clone() const override
+}
+
+Class Mul {
+	+Mul(Node* left, Node* right)
+	+double evaluate() const override
+	+void print(std::ostream&) const override
+	+Node* clone() const override
+}
+
+Class Div {
+	+Div(Node* left, Node* right)
+	+double evaluate() const override
+	+void print(std::ostream&) const override
+	+Node* clone() const override
+}
+
+Class Variable {
+	-static map<string, double> _variableValuesByName
+	-string _name
+	+Variable(string name)
+	+double evaluate() const override
+	+void print(std::ostream&) const override
+	+Node* clone() const override
+	+static bool exists(string nameKey)
+	+static void setVariableValueByName(string nameKey, double val)
+	+static double getVariableValueByName(string nameKey)
+}
+
+class Constant {
+	-double _val
+	+Constant(double val)
+	+double evaluate() const override
+	+void print(std::ostream&) const override
+	+Node* clone() const override
+}
+
+Class Tree {
+	-Node* _root
+	+Tree(Node* root)
+	+~Tree()
+}
+
+Node <|-- BinaryNode
+BinaryNode <|-- Sub
+BinaryNode <|-- Add
+BinaryNode <|-- Mul
+BinaryNode <|-- Div
+Node <|-- UnaryNode
+UnaryNode <|-- Positive
+UnaryNode <|-- Negative
+Node <|-- LeafNode
+LeafNode <|-- Variable
+LeafNode <|-- Constant
+
+
+@enduml

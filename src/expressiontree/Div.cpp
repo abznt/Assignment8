@@ -1,4 +1,6 @@
 #include "Div.h"
+#include "Sub.h"
+#include "Mul.h"
 
 Div::Div(Node *left, Node *right) : BinaryNode(left, right) {}
 
@@ -19,5 +21,11 @@ Node *Div::clone() const {
 }
 
 Node *Div::derivative(const std::string &variableName) const {
-    return nullptr;
+    return new Div(
+            new Sub(
+                    new Mul(right()->clone(), left()->derivative(variableName)),
+                    new Mul(left()->clone(), right()->derivative(variableName))
+                    ),
+            new Mul(left()->clone(), right()->clone())
+            );
 }

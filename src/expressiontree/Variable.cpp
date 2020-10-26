@@ -5,10 +5,22 @@
 Variable::Variable(const std::string& name) : LeafNode(), _name{name} {
     if (!Variable::exists(name)) {
         _variableValuesByName[name] = std::nan(""); // initialize key but don't assign any value
-        std::cout << "Adding variable named '" << name << "' to internal map.\n";
+        _variableReferenceCount[name] = 1; // initialize reference count
     }
     else {
-        std::cout << "Variable name '" << name << "' already exists in internal map.\n";
+        _variableReferenceCount[name]++;
+    }
+}
+
+Variable::~Variable() {
+    // If the variable reference count is >1, decrement the reference count. Otherwise, delete the entries for the
+    // variable in variableReferenceCount and variableValuesByName
+    if (_variableReferenceCount[_name] > 1) {
+        _variableReferenceCount[_name]--;
+    }
+    else {
+        _variableReferenceCount.erase(_name);
+        _variableValuesByName.erase(_name);
     }
 }
 

@@ -11,6 +11,8 @@ private:
 public:
     ExpressionTree(Node* root);
 
+    ExpressionTree(ExpressionTree* tree);
+
     ~ExpressionTree() {
         delete _root;
     };
@@ -27,6 +29,8 @@ public:
     [[nodiscard]] double evaluate() const {
         return _root->evaluate();
     };
+
+    [[nodiscard]] ExpressionTree* derivative(const std::string& variableName) const;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const ExpressionTree& tree) {

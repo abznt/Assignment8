@@ -1,4 +1,5 @@
 #include "Mul.h"
+#include "Add.h"
 
 Mul::Mul(Node *left, Node *right) : BinaryNode(left, right) {}
 
@@ -19,7 +20,10 @@ Node *Mul::clone() const {
 }
 
 Node *Mul::derivative(const std::string &variableName) const {
-    return nullptr;
+    return new Add(
+            new Mul(left()->clone(), right()->derivative(variableName)),
+            new Mul(right()->clone(), left()->derivative(variableName))
+            );
 }
 
 

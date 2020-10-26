@@ -19,5 +19,5 @@ Node *Add::clone() const {
 }
 
 Node *Add::derivative(const std::string &variableName) const {
-    return nullptr;
+    return new Add(left()->derivative(variableName), right()->derivative(variableName));
 }

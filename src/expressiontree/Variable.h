@@ -11,10 +11,12 @@
 class Variable : public LeafNode {
 private:
     inline static std::unordered_map<std::string, double> _variableValuesByName;
+    inline static std::unordered_map<std::string, int> _variableReferenceCount;
     std::string _name;
 
 public:
     explicit Variable(const std::string& name);
+    ~Variable();
     [[nodiscard]] double evaluate() const override;
     void print(std::ostream& os) const override;
     [[nodiscard]] Node *clone() const override;

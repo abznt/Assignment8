@@ -17,5 +17,5 @@ Node *Positive::clone() const {
 }
 
 Node *Positive::derivative(const std::string &variableName) const {
-    return nullptr;
+    return new Positive(left()->derivative(variableName));
 }

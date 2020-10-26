@@ -19,5 +19,5 @@ Node *Sub::clone() const {
 }
 
 Node *Sub::derivative(const std::string &variableName) const {
-    return nullptr;
+    return new Sub(left()->derivative(variableName), right()->derivative(variableName));
 }
