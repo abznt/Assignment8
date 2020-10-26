@@ -1,11 +1,9 @@
 set(targetName Main)
 project(${targetName})
 
-add_subdirectory(statistics)
-add_subdirectory(utils)
+add_subdirectory(expressiontree)
 
 add_executable(${targetName} main.cpp)
-target_link_libraries(${targetName} Statistics)
-target_link_libraries(${targetName} Utils)
+target_link_libraries(${targetName} ExpressionTree)
 
 unset(targetName)

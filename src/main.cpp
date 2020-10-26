@@ -1,23 +1,29 @@
 // Main.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include "ExpressionTree.h"
+#include "Add.h"
+#include "Sub.h"
+#include "Mul.h"
+#include "Div.h"
+#include "Constant.h"
+#include "Variable.h"
 #include <iostream>
-#include <vector>
-#include "FileUtil.h"
-#include "Statistic.h"
 
 /**
  * @brief Main entry point for the program
  */
 int main()
 {
-    std::string dataFile{ "../distribution_data.csv" };
-    std::cout << "Data file: " << dataFile << std::endl;
-    std::vector<double> data = FileUtil::readCsv(dataFile);
-    statistics::Statistic stat{ data };
-    double mean = stat.mean();
-    double stdev = stat.standardDeviation();
-    std::cout << "Mean = " << mean << std::endl;
-    std::cout << "Standard deviation = " << stdev << std::endl;
-    return 0;
+    ExpressionTree t = new Add(
+            new Mul(new Constant(2.3), new Variable("X")),
+            new Mul(new Variable("Y"),
+                    new Sub(new Variable("Z"), new Variable("X")))
+            );
+    std::cout << t << std::endl;
+    Variable::setVariableValue("X", 2.0);
+    Variable::setVariableValue("Y", 3.0);
+    Variable::setVariableValue("Z", 5.0);
+    std::cout << "Setting variables 'X' = " << 2.0 << ", 'Y' = " << 3.0 << ", 'Z' = " << 5.0 << std::endl;
+    std::cout << "Expression evaluates to: " << t.evaluate() << std::endl;
 }
