@@ -26,6 +26,6 @@ Node *Div::derivative(const std::string &variableName) const {
                     new Mul(right()->clone(), left()->derivative(variableName)),
                     new Mul(left()->clone(), right()->derivative(variableName))
                     ),
-            new Mul(left()->clone(), right()->clone())
+            new Mul(right()->clone(), right()->clone())
             );
 }
