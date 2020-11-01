@@ -8,67 +8,84 @@ abstract Node {
 	-Node* _right
 	#Node(Node* left = nullptr, Node* right = nullptr)
 	+virtual ~Node()
-	+Node* getLeft()
-	+Node* getRight()
+	+Node* left()
+	+Node* right()
 	+virtual double evaluate() const = 0
 	+virtual void print(std::ostream&) const = 0
 	+virtual Node* clone() const = 0
+	+virtual Node* derivative(string variableName) const = 0
 	+ostream& operator<<(ostream& os, const Node& node)
+	+ostream& operator<<(ostream& os, const Node* node)
 }
 
 abstract BinaryNode {
 	#BinaryNode(Node* left, Node* right)
 }
+hide BinaryNode attributes
 
 abstract UnaryNode {
 	#UnaryNode(Node* left)
 }
+hide UnaryNode attributes
 
 class Positive {
 	+Positive(Node* left)
 	+double evaluate() const override
 	+void print(std::ostream&) const override
 	+Node* clone() const override
+	+Node* derivative(string variableName) const override
 }
+hide Positive attributes
 
 class Negative {
 	+Negative(Node* left)
 	+double evaluate() const override
 	+void print(std::ostream&) const override
 	+Node* clone() const override
+	+Node* derivative(string variableName) const override
 }
+hide Negative attributes
 
 abstract LeafNode {
 	#LeafNode()
 }
+hide LeafNode attributes
 
 Class Sub {
 	+Sub(Node* left, Node* right)
 	+double evaluate() const override
 	+void print(std::ostream&) const override
 	+Node* clone() const override
+	+Node* derivative(string variableName) const override
 }
+hide Sub attributes
 
 Class Add {
 	+Add(Node* left, Node* right)
 	+double evaluate() const override
 	+void print(std::ostream&) const override
 	+Node* clone() const override
+	+Node* derivative(string variableName) const override
 }
+hide Add attributes
 
 Class Mul {
 	+Mul(Node* left, Node* right)
 	+double evaluate() const override
 	+void print(std::ostream&) const override
 	+Node* clone() const override
+	+Node* derivative(string variableName) const override
 }
+hide Mul attributes
 
 Class Div {
 	+Div(Node* left, Node* right)
 	+double evaluate() const override
 	+void print(std::ostream&) const override
 	+Node* clone() const override
+	+Node* derivative(string variableName) const override
 }
+hide Div attributes
 
 Class Variable {
 	-static map<string, double> _variableValuesByName
@@ -77,6 +94,7 @@ Class Variable {
 	+double evaluate() const override
 	+void print(std::ostream&) const override
 	+Node* clone() const override
+	+Node* derivative(string variableName) const override
 	+static bool exists(string nameKey)
 	+static void setVariableValueByName(string nameKey, double val)
 	+static double getVariableValueByName(string nameKey)
@@ -88,25 +106,33 @@ class Constant {
 	+double evaluate() const override
 	+void print(std::ostream&) const override
 	+Node* clone() const override
+	+Node* derivative(string variableName) const override
 }
 
-Class Tree {
+Class ExpressionTree {
 	-Node* _root
-	+Tree(Node* root)
-	+~Tree()
+	+ExpressionTree(Node* root)
+	+ExpressionTree(ExpressionTree& tree)
+	+~ExpressionTree()
+	+Node* root() const
+	+double evaluate() const
+	+ExpressionTree derivative(const string& variableName) const
+	+ostream& operator<<(ostream &os, const Node &node)
+	+ostream& operator<<(ostream &os, const Node *node)
 }
 
-Node <|-- BinaryNode
-BinaryNode <|-- Sub
-BinaryNode <|-- Add
+ExpressionTree *-- Node
+BinaryNode -|> Node
+Add --|> BinaryNode
+Sub --|> BinaryNode
 BinaryNode <|-- Mul
 BinaryNode <|-- Div
 Node <|-- UnaryNode
 UnaryNode <|-- Positive
 UnaryNode <|-- Negative
-Node <|-- LeafNode
+Node <|- LeafNode
 LeafNode <|-- Variable
-LeafNode <|-- Constant
+Constant --|> LeafNode
 
 
 @enduml
